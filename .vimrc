@@ -88,7 +88,7 @@ autocmd FileType javascript set formatprg=prettier\ --stdin
 autocmd FileType typescript set formatprg=prettier\ --parser\ typescript
 
 " Enable Deoplete at startup
-let g:deoplete#enable_at_startup = 1
+" let g:deoplete#enable_at_startup = 1
 
 
 " MISC
