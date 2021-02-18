@@ -1,4 +1,4 @@
-" Just add this to the vimrc with:
+" Just add this to ~/.vimrc with:
 " source ~/path/to/this/file
 
 " SYNTAX COLORING
@@ -33,24 +33,36 @@ autocmd BufNewFile,BufFilePre,BufRead *.ly set filetype=lilypond
 " PLUGINS - VIM-PLUG 
 call plug#begin('~/.vim/plugged')
 
+" Fuzzy finder
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" Syntax highlighting
+"    html
+Plug 'othree/html5.vim'
+"    css
+Plug 'hail2u/vim-css3-syntax'
+"    js
+" Plug 'pangloss/vim-javascript'
+"    better js support
+Plug 'yuezk/vim-js'
+"    tsx 
+Plug 'HerringtonDarkholme/yats.vim'
+"    jsx 
+Plug 'maxmellon/vim-jsx-pretty'
+"    Elm (more than syntax)
+Plug 'elmcast/elm-vim'
+
+" Code formatting
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+
 " Theme
 Plug 'ajmwagar/vim-deus'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'joshdick/onedark.vim'
 
-"Code formatting
-Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 " Asynchronous Lint Engine
 " Plug 'w0rp/ale'
-
-" Elm
-Plug 'elmcast/elm-vim'
-
-" Syntax highlighting for html, css, js and jsx
-Plug 'othree/html5.vim'
-Plug 'hail2u/vim-css3-syntax'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
 
 " Deoplete - Auto-completion framework
 " (+ flow autocompletion)
@@ -93,3 +105,12 @@ au Filetype supercollider packadd scvim
 :set nobackup
 :set nowritebackup
 :endif
+
+" FZF
+" search in the Dev directory
+command! -bang DevFiles call fzf#vim#files('~/Dev', <bang>0)
+
+" search in the current directory
+command! -bang CurDirFiles call fzf#vim#files('./', <bang>0)
+" alias ctrl + p to CurDirFiles
+nmap <C-P> :CurDirFiles<CR>
