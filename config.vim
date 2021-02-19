@@ -4,6 +4,9 @@
 " SYNTAX COLORING
 syntax on
 
+" LINE NUMBERS
+set number relativenumber
+
 "
 " INDENTATION
 filetype plugin indent on
