@@ -1,11 +1,23 @@
 " Point to this file in ~/.vimrc :
 " source ~/path/to/this/file
 
-" SYNTAX COLORING
+" GENERAL
 syntax on
 
-" LINE NUMBERS
+" Clear highlighting on escape in normal mode
+nnoremap <esc> :noh<return><esc>
+nnoremap <esc>^[ <esc>^[
+
 set number relativenumber
+
+" nice trick to get relative numbers when the file is in focus and absolute
+" otherwise
+" from https://jeffkreeftmeijer.com/vim-number/
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
 
 "
 " INDENTATION
@@ -19,14 +31,8 @@ set expandtab
 
 
 " KEY MAPPINGS 
-let mapleader="\<SPACE>"
-"open Vim Config
-:nnoremap <leader>vc :vsplit $MYVIMRC<cr>
-"Source Config file
-:nnoremap <leader>sc :source $MYVIMRC<cr>
-" text after cursor to next line
-:nnoremap <leader>j i<cr><esc>
-
+" use space as leader key (normal mode)
+let mapleader = " "
 
 " FILE TYPES
 autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
@@ -37,10 +43,12 @@ autocmd BufNewFile,BufFilePre,BufRead *.ly set filetype=lilypond
 call plug#begin('~/.vim/plugged')
 
 " Fuzzy finder
+Plug 'vim-airline/vim-airline'
+
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-" Syntax highlighting
+" Language support (incl. syntax highlighting)
 "    html
 Plug 'othree/html5.vim'
 "    css
@@ -53,8 +61,10 @@ Plug 'yuezk/vim-js'
 Plug 'HerringtonDarkholme/yats.vim'
 "    jsx 
 Plug 'maxmellon/vim-jsx-pretty'
-"    Elm (more than syntax)
+"    Elm 
 Plug 'elmcast/elm-vim'
+"    Elixir
+Plug 'elixir-editors/vim-elixir'
 
 " Code formatting
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
@@ -89,6 +99,13 @@ colorscheme onedark
 " Prettier - JavaScript formatter
 autocmd FileType javascript set formatprg=prettier\ --stdin
 autocmd FileType typescript set formatprg=prettier\ --parser\ typescript
+" run only there's a prettier config file:
+" let g:prettier#autoformat_config_present = 1
+let g:prettier#autoformat_require_pragma = 0
+" run always:
+let g:prettier#autoformat = 1
+" mapping to run prettier
+nmap <leader>p <Plug>(Prettier)
 
 " Enable Deoplete at startup
 " let g:deoplete#enable_at_startup = 1
@@ -265,20 +282,3 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " provide custom statusline: lightline.vim, vim-airline.
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-" Mappings for CoCList
-" Show all diagnostics.
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
