@@ -4,6 +4,10 @@
 " GENERAL
 syntax on
 
+" automatically refresh buffers if they change externally
+" and there are no unsaved changes
+set autoread
+
 " Clear highlighting on escape in normal mode
 nnoremap <esc> :noh<return><esc>
 nnoremap <esc>^[ <esc>^[
